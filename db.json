@@ -1,0 +1,68 @@
+{
+  "articles": [
+    {
+      "id": 1,
+      "title": "Cats",
+      "author": "Jack Nicolson",
+      "description": "some long long long lon glong long long long long long long long long long description",
+      "image": null,
+      "isPinned": false
+    },
+    {
+      "id": 2,
+      "title": "Dogs",
+      "author": "Jack Figerald",
+      "description": " Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, eos rerum aperiam deserunt, pariatur anim",
+      "image": null,
+      "isPinned": false
+    },
+    {
+      "id": 3,
+      "title": "Crocodiles",
+      "author": "Will Smit",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+      "image": null,
+      "isPinned": false
+    },
+    {
+      "id": 4,
+      "title": "Giraffes",
+      "author": "Harry Elton",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elimong long long description",
+      "image": null,
+      "isPinned": false
+    },
+    {
+      "id": 5,
+      "title": "Lions",
+      "author": "Jerry Nicolson",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, eos rerum aperiam deserunt, pariatur anim",
+      "image": null,
+      "isPinned": false
+    },
+    {
+      "id": 6,
+      "title": "Bees",
+      "author": "Adam Lety",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, eos rerum aperiam deserunt, pariatur anim",
+      "image": null,
+      "isPinned": false
+    },
+    {
+      "id": 8,
+      "title": "Hamsters",
+      "author": "Jack Nicolson",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, eos rerum aperiam deserunt, pariatur anim",
+      "image": null,
+      "isPinned": false
+    },
+    {
+      "title": "New Article top",
+      "author": "Pysanko",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, eos rerum aperiam deserunt, pariatur anim",
+      "image": "blob:http://localhost:3000/4fe23ace-1f86-4673-a843-e73773d0069b",
+      "isPinned": false,
+      "id": 9
+    }
+  ]
+}
