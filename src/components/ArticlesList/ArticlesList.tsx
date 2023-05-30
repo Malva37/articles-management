@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import "./ArticlesList.css";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -8,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import * as articleActions from "../../slices/myArticlesSlice";
 import { Article } from "../../types/Article";
 import { Loader } from "../Loader";
+import { sortArticles } from "../../utils/sortArticles";
 
 export const ArticlesList: React.FC = () => {
   const { articles, loaded, hasError, query, pinnedId } = useAppSelector(
@@ -15,6 +15,32 @@ export const ArticlesList: React.FC = () => {
   );
   const [visibleArticles, setVisibleArticles] = useState<Article[]>([]);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(articleActions.init());
+    dispatch(articleActions.setSelectedArticle(null));
+  }, []);
+
+  useEffect(() => {
+    if (articles) {
+      const pinnedArticle = articles.find((article) => article.isPinned);
+      if (pinnedArticle) {
+        dispatch(articleActions.setPinnedId(pinnedArticle.id));
+      }
+    }
+  }, [articles]);
+
+  useEffect(() => {
+    const preparedArticles = filterArticles(articles, query);
+
+    setVisibleArticles(preparedArticles);
+  }, [articles, query]);
+
+  useEffect(() => {
+    const preparedArticles = sortArticles(articles);
+
+    setVisibleArticles(preparedArticles);
+  }, [articles, pinnedId]);
 
   const deleteArticle = (id: number) => {
     dispatch(articleActions.deleteArticleAsync(id));
@@ -24,24 +50,44 @@ export const ArticlesList: React.FC = () => {
     dispatch(articleActions.setSelectedArticle(article));
   };
 
-  useEffect(() => {
-    const preparedArticles = filterArticles(articles, pinnedId, query);
+  const handleUpdatePinned = (pinnedIdNew: number | null) => {
+    const pinnedArticleOld = articles.find(
+      (article) => article.id === pinnedId
+    );
+    const pinnedArticleNew = articles.find(
+      (article) => article.id === pinnedIdNew
+    );
+    const articlesToUpdate = [];
+    console.log(pinnedIdNew, "pinnedIdNew");
+    console.log(pinnedId, "pinnedId");
 
-    setVisibleArticles(preparedArticles);
-  }, [articles, pinnedId, query]);
+    if (pinnedArticleNew) {
+      const updatedNewArticle = { ...pinnedArticleNew, isPinned: true };
+      articlesToUpdate.push(updatedNewArticle);
+    }
 
-  useEffect(() => {
-    dispatch(articleActions.init());
-    dispatch(articleActions.setSelectedArticle(null));
-  }, []);
+    if (pinnedArticleOld) {
+      const updatedOldArticle = { ...pinnedArticleOld, isPinned: false };
+      articlesToUpdate.push(updatedOldArticle);
+    }
+
+    dispatch(articleActions.updatePinnedArticlesAsync(articlesToUpdate));
+    if (pinnedIdNew) {
+      dispatch(articleActions.setPinnedId(pinnedIdNew));
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(articleActions.setQuery(e.target.value));
+  };
 
   if (loaded) {
     return <Loader />;
   }
-  
+
   if (hasError) {
     return (
-      <div className="notification is-danger" data-cy="PostsLoadingError">
+      <div className="notification is-danger">
         Something went wrong!
       </div>
     );
@@ -52,7 +98,6 @@ export const ArticlesList: React.FC = () => {
       <>
         <h1 className="title">There is no articles yeat</h1>
         <h2 className="subtitle">
-          {" "}
           <Link to="/add">You can add some...</Link>
         </h2>
       </>
@@ -64,7 +109,12 @@ export const ArticlesList: React.FC = () => {
       <nav className="pb-3 navbar is-expanded" role="navigation">
         <div className="navbar-item ">
           <div className="control is-expanded">
-            <input className="input" type="text" placeholder="Type a city" />
+            <input
+              className="input"
+              type="text"
+              placeholder="Find an article..."
+              onChange={handleInputChange}
+            />
           </div>
         </div>
       </nav>
@@ -78,13 +128,14 @@ export const ArticlesList: React.FC = () => {
             <div className="card">
               <div className="card-header">
                 <div className="card-header-title">{article.title}</div>
-                <p className="buttons">
+
+                <p className="buttons navbar-item">
                   {article.isPinned ? (
                     <button
                       className="button"
                       title="De pinned"
                       onClick={() => {
-                        dispatch(articleActions.setPinnedId(article.id));
+                        handleUpdatePinned(null);
                       }}
                     >
                       <span className="icon">
@@ -96,7 +147,7 @@ export const ArticlesList: React.FC = () => {
                       className="button"
                       title="Pinned"
                       onClick={() => {
-                        dispatch(articleActions.setPinnedId(article.id));
+                        handleUpdatePinned(article.id);
                       }}
                     >
                       <span className="icon">
@@ -130,7 +181,7 @@ export const ArticlesList: React.FC = () => {
                 </p>
               </div>
               <div className="card-image">
-                <figure className="image is-3by1">
+                <figure className="image is-4by1">
                   {article.image ? (
                     <img src={article.image.toString()} alt={article.title} />
                   ) : (
@@ -143,7 +194,7 @@ export const ArticlesList: React.FC = () => {
               </div>
               <div className="card-content">
                 <p>Author: {article.author}</p>
-                <div className="content">{article.description}</div>
+                <div className="content description">{article.description}</div>
               </div>
             </div>
           </div>

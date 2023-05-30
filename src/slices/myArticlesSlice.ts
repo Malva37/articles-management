@@ -1,59 +1,73 @@
-import { ArticleRequest } from './../types/ArticleRequest';
-import { PayloadAction, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { addArticle, deleteArticle, getArticles, updateArticle } from '../api/serverHelper';
-import { Article } from '../types/Article';
+import { ArticleRequest } from "./../types/ArticleRequest";
+import { PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  addArticle,
+  deleteArticle,
+  getArticles,
+  updateArticle,
+  updatePinnedArticles,
+} from "../api/serverHelper";
+import { Article } from "../types/Article";
 
 export interface State {
   articles: Article[];
-  pinnedId: number | null;
+  pinnedId: number;
   selectedArticle: Article | null;
   loaded: boolean;
   hasError: boolean;
   query: string;
 }
 
-export const init = createAsyncThunk( 'articles/fetch',
-  async () => {
-    return getArticles();
-  })
+export const init = createAsyncThunk("articles/fetch", async () => {
+  return getArticles();
+});
 
-  export const createArticle = createAsyncThunk('articles/create', async (article: Omit<ArticleRequest, 'id'>) => {
+export const createArticle = createAsyncThunk(
+  "articles/create",
+  async (article: Omit<ArticleRequest, "id">) => {
     const newArticle = {
-     ...article,
-     isPinned: false,
-     id: 0,
-    }
+      ...article,
+      isPinned: false,
+      id: 0,
+    };
     return addArticle(newArticle);
-  });
+  }
+);
 
-  export const updateArticleAsync = createAsyncThunk('articles/update', async (
-    article: Article,
-  ) => {
+export const updateArticleAsync = createAsyncThunk(
+  "articles/update",
+  async (article: Article) => {
     return updateArticle(article.id, article);
-  });
-  
-  export const deleteArticleAsync = createAsyncThunk(
-    'articles/delete',
-    async (articleId: number) => {
-      deleteArticle(articleId);
-  
-      return articleId;
-    },
-  );
+  }
+);
+
+export const updatePinnedArticlesAsync = createAsyncThunk(
+  "articles/updatePinnedArticles",
+  async ( articlesToUpdate : Article[]) => {
+    return updatePinnedArticles(articlesToUpdate);
+  }
+);
+
+export const deleteArticleAsync = createAsyncThunk(
+  "articles/delete",
+  async (articleId: number) => {
+    deleteArticle(articleId);
+
+    return articleId;
+  }
+);
 
 const initialState: State = {
   articles: [],
   loaded: false,
   hasError: false,
-  pinnedId: null,
+  pinnedId: 0,
   selectedArticle: null,
-  query: '',
+  query: "",
 };
 
-
-
 const myArticlesSlice = createSlice({
-  name: 'articles',
+  name: "articles",
   initialState,
   reducers: {
     setSelectedArticle: (state, action: PayloadAction<Article | null>) => {
@@ -62,7 +76,7 @@ const myArticlesSlice = createSlice({
     setPinnedId: (state, action: PayloadAction<number>) => {
       state.pinnedId = action.payload;
     },
-    searchArticles: (state, action: PayloadAction<string>) => {
+    setQuery: (state, action: PayloadAction<string>) => {
       state.query = action.payload;
     },
   },
@@ -81,6 +95,7 @@ const myArticlesSlice = createSlice({
         state.loaded = false;
         state.hasError = true;
       })
+
       .addCase(createArticle.pending, (state) => {
         state.loaded = true;
       })
@@ -113,11 +128,34 @@ const myArticlesSlice = createSlice({
         state.loaded = false;
       })
 
+      .addCase(updatePinnedArticlesAsync.pending, (state) => {
+        state.loaded = true;
+      })
+      .addCase(updatePinnedArticlesAsync.fulfilled, (state, action) => {
+        const updatedArticles = action.payload;
+        state.articles = state.articles.map(article => {
+          for (let i = 0; i < updatedArticles.length; i++) {
+            if(article.id === updatedArticles[i].id) {
+              return updatedArticles[i];
+            }
+          }
+          return article;
+        });
+        state.loaded = false;
+        state.hasError = false;
+      })
+      .addCase(updatePinnedArticlesAsync.rejected, (state) => {
+        state.hasError = true;
+        state.loaded = false;
+      })
+
       .addCase(deleteArticleAsync.pending, (state) => {
         state.loaded = true;
       })
       .addCase(deleteArticleAsync.fulfilled, (state, action) => {
-        state.articles = state.articles.filter(article => article.id !== action.payload);
+        state.articles = state.articles.filter(
+          (article) => article.id !== action.payload
+        );
         state.loaded = false;
         state.hasError = false;
       })
@@ -128,5 +166,9 @@ const myArticlesSlice = createSlice({
   },
 });
 
-export const { setPinnedId, setSelectedArticle } = myArticlesSlice.actions;
+export const {
+  setPinnedId,
+  setSelectedArticle,
+  setQuery,
+} = myArticlesSlice.actions;
 export default myArticlesSlice.reducer;

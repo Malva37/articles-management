@@ -2,9 +2,11 @@
 
 This is a simple web application for managing a list of articles. The project consists of three pages:
 
-1. Articles List Page: Displays a list of articles with the ability to search by description and title of aarticles. Clicking on the edit button will redirect you to another page with the data of the selected article for editing.
+1. Articles List Page: Displays a list of articles with the ability to search by description and title. Users also can pin article, which will make it appear first in the list. Only one pinned item allowed. Clicking on the edit button will redirect you to another page with the data of the selected article for editing.
 
 2. Add/Edit Article Page: Allows creating new articles. The form contains fields for entering the title, author, image, and descripion. Article data is stored on the fake server.
+
+3. Articles List Page(Data from External Source). Clicking on the 'Add 10 new articles' button allows the user to retrieve an additional 10 articles. The articles are not repeated if the user clicks the button several times.
 
 ## Steps to run the project:
 

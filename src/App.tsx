@@ -3,6 +3,7 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import { Routes, Route, Navigate, Link } from "react-router-dom";
 import { ArticlesList } from "./components/ArticlesList/ArticlesList";
 import { NewArticleForm } from "./components/NewArticleForm/NewArticleForm";
+import { NewsFromAPIList } from "./components/NewsFromAPIList";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
         <Routes>
           <Route path="/" element={<ArticlesList />} />
           <Route path="/add" element={<NewArticleForm />} />
+          <Route path="/request" element={<NewsFromAPIList />} />
           <Route path="*" element={<p>Page not found</p>} />
           <Route path="/home" element={<Navigate to="/" replace />} />
         </Routes>

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import myArticlesReducer from '../slices/myArticlesSlice';
+import newsFromApiReducer from '../slices/newsFromApiSlice';
 
 export const store = configureStore({
   reducer: {
     articles: myArticlesReducer,
+    news: newsFromApiReducer,
   },
 });
 

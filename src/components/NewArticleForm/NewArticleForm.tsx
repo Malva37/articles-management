@@ -16,7 +16,9 @@ export const NewArticleForm: React.FC = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState<string | File>("");
+  const [selectedFile, setSelectedFile] = useState<File | string>("");
+
   const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
@@ -32,12 +34,11 @@ export const NewArticleForm: React.FC = () => {
     return () => {};
   }, [showModal]);
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files?.length) {
-      const file = URL.createObjectURL(event.target.files[0]);
-      setImage(file);
+  useEffect(() => {
+    if (selectedArticle) {
+      fillForm();
     }
-  };
+  }, [selectedArticle]);
 
   const openModal = (message: string) => {
     setSuccessMessage(message);
@@ -54,23 +55,18 @@ export const NewArticleForm: React.FC = () => {
     setShowModal(true);
   };
 
-  useEffect(() => {
-    if (selectedArticle) {
-      fillForm();
-    }
-  }, [selectedArticle]);
-
   const fillForm = () => {
     if (selectedArticle) {
       setTitle(selectedArticle.title);
       setAuthor(selectedArticle.author);
       setDescription(selectedArticle.description);
       setImage(selectedArticle.image);
+      setSelectedFile(selectedArticle.image);
     }
   };
 
   const isFormNotValid =
-    title === "" || author === "" || description === "" || image === "";
+    title === "" || author === "" || description === "" || selectedFile === "";
 
   let disabled = true;
 
@@ -97,7 +93,6 @@ export const NewArticleForm: React.FC = () => {
       };
 
       dispatch(articleActions.updateArticleAsync(updatedArticle));
-
       handleShowModal("You have edited article, let's go to articles list.");
       return;
     }
@@ -111,6 +106,20 @@ export const NewArticleForm: React.FC = () => {
 
     dispatch(articleActions.createArticle(newRoute));
     handleShowModal("You have added new article, let's go to articles list.");
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      if (file.type.includes("image/")) {
+        setSelectedFile(file);
+        const reader = new FileReader();
+        reader.onload = () => {
+          setImage(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
   };
 
   return (
@@ -160,8 +169,8 @@ export const NewArticleForm: React.FC = () => {
                   className="file-input"
                   type="file"
                   name="image"
+                  accept="image/*"
                   onChange={handleFileChange}
-                  required
                 />
                 <span className="file-cta">
                   <span className="file-icon">
@@ -169,12 +178,10 @@ export const NewArticleForm: React.FC = () => {
                   </span>
                   <span className="file-label">Choose a file…</span>
                 </span>
-                {image === "" ? (
+                {!selectedFile ? (
                   <span className="file-name">No file uploaded</span>
                 ) : (
-                  <span className="file-name">
-                    {`File is loaded: ${image}`}
-                  </span>
+                  <span className="file-name">{"File loaded"}</span>
                 )}
               </label>
             </div>

@@ -1,6 +1,6 @@
-export interface ArticleRequest {
+export interface NewFromApi {
   title: string;
   author: string;
-  image: string | File;
+  urlToImage: string;
   description: string;
 }

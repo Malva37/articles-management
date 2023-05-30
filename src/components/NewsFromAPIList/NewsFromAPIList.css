@@ -16,7 +16,6 @@
     column-count: 1;
   }
 }
-
 .description {
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -5,23 +5,23 @@
       "title": "Cats",
       "author": "Jack Nicolson",
       "description": "some long long long lon glong long long long long long long long long long description",
-      "image": null,
+      "image": "https://i.insider.com/64514d92a19cbe00192dc2fe?width=1200&format=jpeg",
       "isPinned": false
     },
     {
       "id": 2,
-      "title": "Dogs",
+      "title": "Dogs article",
       "author": "Jack Figerald",
       "description": " Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, eos rerum aperiam deserunt, pariatur anim",
-      "image": null,
+      "image": "https://i.insider.com/6460db6811971c00188f4045?width=1200&format=jpeg",
       "isPinned": false
     },
     {
       "id": 3,
       "title": "Crocodiles",
       "author": "Will Smit",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-      "image": null,
+      "description": "Crocodiles CrocodilesLorem ipsum dolor sit amet, consectetur adipisicing elit.",
+      "image": "https://i.insider.com/646637417224930019f3630a?width=1200&format=jpeg",
       "isPinned": false
     },
     {
@@ -29,7 +29,7 @@
       "title": "Giraffes",
       "author": "Harry Elton",
       "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elimong long long description",
-      "image": null,
+      "image": "https://i0.wp.com/boingboing.net/wp-content/uploads/2023/05/Screen-Shot-2023-05-01-at-11.03.33-AM.png?fit=868%2C876&ssl=1",
       "isPinned": false
     },
     {
@@ -37,7 +37,7 @@
       "title": "Lions",
       "author": "Jerry Nicolson",
       "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, eos rerum aperiam deserunt, pariatur anim",
-      "image": null,
+      "image": "https://i0.wp.com/boingboing.net/wp-content/uploads/2023/05/Screen-Shot-2023-04-23-at-2.46.05-PM.png?fit=1000%2C1200&ssl=1",
       "isPinned": false
     },
     {
@@ -45,7 +45,7 @@
       "title": "Bees",
       "author": "Adam Lety",
       "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, eos rerum aperiam deserunt, pariatur anim",
-      "image": null,
+      "image": "https://i.insider.com/64532875dcb78700180ccfce?width=1200&format=jpeg",
       "isPinned": false
     },
     {
@@ -53,16 +53,8 @@
       "title": "Hamsters",
       "author": "Jack Nicolson",
       "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, eos rerum aperiam deserunt, pariatur anim",
-      "image": null,
+      "image": "https://i0.wp.com/boingboing.net/wp-content/uploads/2015/05/hamster.jpg?fit=1200%2C607&ssl=1",
       "isPinned": false
-    },
-    {
-      "title": "New Article top",
-      "author": "Pysanko",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, eos rerum aperiam deserunt, pariatur anim",
-      "image": "blob:http://localhost:3000/4fe23ace-1f86-4673-a843-e73773d0069b",
-      "isPinned": false,
-      "id": 9
     }
   ]
 }
